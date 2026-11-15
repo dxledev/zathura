@@ -19,6 +19,7 @@
 #include "marks.h"
 #include "render.h"
 #include "shortcuts.h"
+#include "theme.h"
 #include "utils.h"
 #include "zathura.h"
 
@@ -92,6 +93,18 @@ static void cb_color_change(girara_session_t* session, const char* name, girara_
   }
 
   zathura_document_widget_render_all(zathura->ui.document_widget);
+}
+
+static void cb_theme_changed(girara_session_t* session, const char* UNUSED(name), girara_setting_type_t UNUSED(type),
+                             const void* UNUSED(value), void* UNUSED(data)) {
+  g_return_if_fail(session != NULL);
+  g_return_if_fail(session->global.data != NULL);
+  zathura_t* zathura = session->global.data;
+
+  /* settings parsed from zathurarc arrive before the theme is first applied */
+  if (zathura->theme != NULL) {
+    zathura_theme_init(zathura);
+  }
 }
 
 static void cb_nohlsearch_changed(girara_session_t* session, const char* UNUSED(name),
@@ -538,6 +551,9 @@ void config_load_default(zathura_t* zathura) {
   girara_setting_add(gsession, "signature-success-color",    NULL,         STRING,  false, _("Color used to highlight valid signatures"), cb_color_change, NULL);
   girara_setting_add(gsession, "signature-warning-color",    NULL,         STRING,  false, _("Color used to highlight signatures with warnings"), cb_color_change, NULL);
   girara_setting_add(gsession, "signature-error-color",      NULL,         STRING,  false, _("Color used to highlight invalid signatures"), cb_color_change, NULL);
+  bool_value = true;
+  girara_setting_add(gsession, "theme-follow",               &bool_value,  BOOLEAN, false, _("Follow the desktop theme colors"), cb_theme_changed, NULL);
+  girara_setting_add(gsession, "theme-source",               NULL,         STRING, false, _("Theme directory (default: $XDG_CONFIG_HOME/themes/.caelestia-use)"), cb_theme_changed, NULL);
   bool_value = false;
   girara_setting_add(gsession, "recolor",                    &bool_value,  BOOLEAN, false, _("Recolor pages"), cb_setting_recolor_change, NULL);
   bool_value = false;

@@ -30,6 +30,7 @@ typedef struct zathura_page_widget_class_s ZathuraPageWidgetClass;
  * Zathura
  */
 typedef struct zathura_s zathura_t;
+typedef struct zathura_theme_s zathura_theme_t;
 
 /**
  * Plugin manager

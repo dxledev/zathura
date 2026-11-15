@@ -1,3 +1,12 @@
+/* Containers show the session background even when a global GTK stylesheet paints every box */
+
+#@session@ box,
+#@session@ scrolledwindow,
+#@session@ viewport {
+  background-color: transparent;
+  background-image: none;
+}
+
 /* Index mode colors */
 
 #@session@ .indexmode {

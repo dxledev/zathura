@@ -28,7 +28,8 @@
 }
 
 /* Completion entries and groups */
-#@session@ .completion, .completion-box {
+#@session@ .completion,
+#@session@ .completion-box {
   color: @completion-fg@;
   background-color: @completion-bg@;
 }

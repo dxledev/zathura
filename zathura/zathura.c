@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Zlib */
 
 #include "zathura.h"
+#include "theme.h"
 
 #include <glib-object.h>
 #include <glib.h>
@@ -411,6 +412,9 @@ bool zathura_init(zathura_t* zathura) {
   config_load_default(zathura);
   config_load_files(zathura);
 
+  /* colors from the desktop theme, applied over the configuration files */
+  zathura_theme_init(zathura);
+
   /* UI */
   if (init_ui(zathura) == false) {
     girara_error("Failed to initialize UI.");
@@ -490,6 +494,8 @@ void zathura_free(zathura_t* zathura) {
 
   /* stop D-Bus */
   g_clear_object(&zathura->dbus);
+
+  zathura_theme_free(zathura);
 
   if (zathura->ui.session != NULL) {
     girara_session_destroy(zathura->ui.session);

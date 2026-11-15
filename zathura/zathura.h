@@ -195,6 +195,7 @@ struct zathura_s {
   ZathuraDocumentWidget* predecessor_document_widget; /**< The document widget from before a reload */
   zathura_database_t* database;                       /**< The database */
   ZathuraDbus* dbus;                                  /**< D-Bus service */
+  zathura_theme_t* theme;                             /**< Desktop theme follower */
 
   /**
    * File monitor
